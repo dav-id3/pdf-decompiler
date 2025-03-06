@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: .
+      target: ${STAGE:-prod}
+    image: "pdf_app_${STAGE:-prod}"
+    stdin_open: true
+    tty: true
+    container_name: "pdf_app_${STAGE:-prod}"
+    environment:
+      DISPLAY: ${DISPLAY}
+    volumes:
+      - ./data:/workdir/data
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    restart: always
+    
+    command: ["python", "-u", "-m", "src.main"]
